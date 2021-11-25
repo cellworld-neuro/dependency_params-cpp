@@ -53,7 +53,11 @@ namespace params_cpp{
     }
 
     const std::string &Parser::get(const Key &key, const std::string &default_value) const {
-        auto &value = get(key);
-        return value == not_found ? default_value : value;
+        bool next = false;
+        for (auto &p:raw ){
+            if (next) return p;
+            if (key.match(p)) next = true;
+        }
+        return default_value;
     }
 }
