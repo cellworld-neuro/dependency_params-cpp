@@ -1,5 +1,7 @@
+#include <stdexcept>
 #include <params_cpp/parser.h>
 
+using namespace std;
 
 namespace params_cpp{
 
@@ -17,7 +19,12 @@ namespace params_cpp{
             if (next) return p;
             if (key.match(p)) next = true;
         }
-        return not_found;
+        string error_message ("expected parameter ");
+        for (auto &alias: key.aliases){
+            error_message += alias + " ";
+        }
+        error_message += "not found.";
+        throw runtime_error(error_message);
     }
 
     bool Parser::contains(const Key &key) const {
@@ -41,6 +48,12 @@ namespace params_cpp{
                 c++;
             }
         }
-        return not_found;
+        string error_message ("expected positional parameter " + to_string(pos) + ".");
+        throw runtime_error(error_message);
+    }
+
+    const std::string &Parser::get(const Key &key, const std::string &default_value) const {
+        auto &value = get(key);
+        return value == not_found ? default_value : value;
     }
 }
