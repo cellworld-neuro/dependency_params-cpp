@@ -31,14 +31,13 @@ else(MSVC)
     target_compile_options(params-cpp PRIVATE -Wall -Wextra -pedantic)
 endif(MSVC)
 
+include_directories( include )
+
 target_include_directories(params-cpp
         SYSTEM INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 
-target_include_directories(params-cpp
-        PRIVATE
-        include )
 
 
 ###
